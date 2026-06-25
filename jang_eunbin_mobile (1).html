@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>장은빈님 건강 · 보험 분석 리포트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh;}
+.shell{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;padding:1.25rem 1rem 2rem;}
+.card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);border-radius:12px;padding:1rem;}
+.scard{background:#f5f5f3;border-radius:8px;padding:12px;}
+.progress-header{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;}
+.progress-steps{display:flex;gap:4px;flex:1;}
+.pstep{height:4px;border-radius:2px;flex:1;background:rgba(0,0,0,0.1);}
+.pstep.done{background:#E24B4A;}
+.pstep.active{background:#185FA5;}
+.step-label{font-size:11px;color:#888;white-space:nowrap;}
+.step-tag{display:inline-block;font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px;background:#f0f0ee;color:#666;margin-bottom:10px;letter-spacing:0.04em;}
+.headline{font-size:18px;font-weight:600;color:#1a1a1a;line-height:1.45;margin-bottom:8px;}
+.subline{font-size:13px;color:#666;line-height:1.65;margin-bottom:1.25rem;}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:1rem;}
+.fact-card{background:#f5f5f3;border-radius:8px;padding:12px;}
+.fact-num{font-size:20px;font-weight:600;margin-bottom:2px;}
+.fact-label{font-size:11px;color:#666;}
+.fact-sub{font-size:10px;color:#999;margin-top:3px;}
+.rbar-wrap{margin-bottom:8px;}
+.rbar-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;color:#1a1a1a;}
+.rbar-val{font-weight:500;}
+.rbar-bg{background:#f0f0ee;border-radius:4px;height:6px;overflow:hidden;}
+.rbar-fill{height:6px;border-radius:4px;}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;}
+.bd{background:#FCEBEB;color:#A32D2D;}
+.bw{background:#FAEEDA;color:#854F0B;}
+.bg{background:#EAF3DE;color:#3B6D11;}
+.bb{background:#E6F1FB;color:#0C447C;}
+.callout{border-left:3px solid #E24B4A;padding:10px 12px;background:#FCEBEB;border-radius:0 8px 8px 0;margin-bottom:1rem;}
+.callout p{font-size:12px;color:#791F1F;line-height:1.65;}
+.callout-amber{border-left:3px solid #EF9F27;padding:10px 12px;background:#FAEEDA;border-radius:0 8px 8px 0;margin-bottom:1rem;}
+.callout-amber p{font-size:12px;color:#633806;line-height:1.65;}
+.callout-blue{border-left:3px solid #378ADD;padding:10px 12px;background:#E6F1FB;border-radius:0 8px 8px 0;margin-bottom:1rem;}
+.callout-blue p{font-size:12px;color:#0C447C;line-height:1.65;}
+.row-item{display:flex;gap:10px;padding:10px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);}
+.row-item:last-child{border-bottom:none;}
+.row-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;}
+.row-main{flex:1;min-width:0;}
+.row-title{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
+.row-desc{font-size:11px;color:#666;line-height:1.55;}
+.action-item{display:flex;gap:10px;padding:12px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);}
+.action-item:last-child{border-bottom:none;}
+.action-num{width:24px;height:24px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.action-body{flex:1;min-width:0;}
+.action-title{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
+.action-desc{font-size:11px;color:#666;line-height:1.55;margin-bottom:5px;}
+.urg-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f5f5f3;border-radius:8px;margin-bottom:6px;}
+.urg-label{font-size:11px;color:#666;min-width:100px;}
+.urg-track{flex:1;background:rgba(0,0,0,0.1);border-radius:4px;height:5px;overflow:hidden;}
+.urg-fill{height:5px;border-radius:4px;}
+.urg-val{font-size:11px;font-weight:500;min-width:28px;text-align:right;}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid rgba(0,0,0,0.08);}
+.nbtn{padding:10px 16px;font-size:13px;font-weight:500;border:0.5px solid rgba(0,0,0,0.2);border-radius:8px;background:transparent;color:#1a1a1a;cursor:pointer;font-family:inherit;min-height:44px;}
+.nbtn-primary{background:#185FA5;color:#fff;border-color:#185FA5;}
+.nbtn-full{width:100%;padding:14px;font-size:14px;font-weight:600;background:#185FA5;color:#fff;border:none;border-radius:12px;cursor:pointer;font-family:inherit;margin-top:1rem;min-height:50px;}
+.pg{font-size:11px;color:#999;}
+.section-label{font-size:12px;font-weight:600;color:#1a1a1a;margin-bottom:10px;}
+.info-box{font-size:11px;color:#666;line-height:1.6;padding:10px;background:#f5f5f3;border-radius:8px;}
+.gap{margin-bottom:1rem;}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<div id="s0">
+  <div class="progress-header">
+    <div class="progress-steps">
+      <div class="pstep active"></div>
+      <div class="pstep"></div>
+      <div class="pstep"></div>
+      <div class="pstep"></div>
+    </div>
+    <span class="step-label">1 / 4</span>
+  </div>
+  <div class="step-tag">STEP 01 · 객관적 사실</div>
+  <div class="headline">지금 장은빈님의<br>몸 상태입니다.</div>
+  <div class="subline">국민건강보험공단 1,000만 명 데이터 기반 분석 결과입니다.</div>
+  <div class="grid2">
+    <div class="fact-card">
+      <div class="fact-num" style="color:#E24B4A;">40.7세</div>
+      <div class="fact-label">생체나이</div>
+      <div class="fact-sub">주민등록 32.6세 대비 +8.1세</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-num" style="color:#E24B4A;">1.25배</div>
+      <div class="fact-label">노화 속도</div>
+      <div class="fact-sub">동년배보다 빠름</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-num" style="color:#BA7517;">75.7세</div>
+      <div class="fact-label">예측 기대수명</div>
+      <div class="fact-sub">여성 평균 대비 단축</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-num" style="color:#E24B4A;">3.1억</div>
+      <div class="fact-label">생애 예상 의료비</div>
+      <div class="fact-sub">동년배 평균 +15.6%</div>
+    </div>
+  </div>
+  <div class="card gap">
+    <div class="section-label">장기별 생체나이</div>
+    <div class="rbar-wrap">
+      <div class="rbar-row"><span>심장나이</span><span class="rbar-val" style="color:#A32D2D;">41.2세 · 매우나쁨</span></div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:82%;background:#E24B4A;"></div></div>
+    </div>
+    <div class="rbar-wrap">
+      <div class="rbar-row"><span>비만체형나이</span><span class="rbar-val" style="color:#A32D2D;">39.6세 · 매우나쁨</span></div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:78%;background:#E24B4A;"></div></div>
+    </div>
+    <div class="rbar-wrap">
+      <div class="rbar-row"><span>췌장나이</span><span class="rbar-val" style="color:#BA7517;">35.9세 · 나쁨</span></div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:65%;background:#EF9F27;"></div></div>
+    </div>
+    <div class="rbar-wrap">
+      <div class="rbar-row"><span>간나이</span><span class="rbar-val" style="color:#BA7517;">33.1세 · 나쁨</span></div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:55%;background:#EF9F27;"></div></div>
+    </div>
+    <div class="rbar-wrap">
+      <div class="rbar-row"><span>신장나이</span><span class="rbar-val" style="color:#3B6D11;">28.7세 · 좋음</span></div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:32%;background:#639922;"></div></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="fact-card">
+      <div class="fact-num" style="font-size:18px;color:#1a1a1a;">19건</div>
+      <div class="fact-label">현재 가입 계약</div>
+      <div class="fact-sub">월 보험료 48.9만원</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-num" style="font-size:18px;color:#1a1a1a;">1,450만</div>
+      <div class="fact-label">지금까지 납입 보험료</div>
+      <div class="fact-sub">기납 보험료 총액</div>
+    </div>
+  </div>
+  <button class="nbtn-full" onclick="go(1)">다음 — 아쉬운 점 보기 ›</button>
+</div>
+
+<div id="s1" style="display:none;">
+  <div class="progress-header">
+    <div class="progress-steps">
+      <div class="pstep done"></div>
+      <div class="pstep active"></div>
+      <div class="pstep"></div>
+      <div class="pstep"></div>
+    </div>
+    <span class="step-label">2 / 4</span>
+  </div>
+  <div class="step-tag">STEP 02 · 아쉬운 점</div>
+  <div class="headline">19건 가입했지만<br>정작 필요한 보장이<br><span style="color:#E24B4A;">비어있습니다.</span></div>
+  <div class="subline">월 48.9만원을 내고 있음에도 생체나이 기준 가장 위험한 질환들이 사각지대에 있습니다.</div>
+  <div class="card gap">
+    <div class="row-item">
+      <div class="row-icon" style="background:#FCEBEB;"><i class="ti ti-heart-off" style="color:#A32D2D;"></i></div>
+      <div class="row-main">
+        <div class="row-title">심뇌혈관 보장 없음 <span class="badge bd">최우선</span></div>
+        <div class="row-desc">급성심근경색 <strong style="color:#1a1a1a;">0원</strong> · 뇌졸중 <strong style="color:#1a1a1a;">0원</strong> · 뇌출혈 <strong style="color:#1a1a1a;">0원</strong>. 심장나이 41.2세 기준 가장 먼저 채워야 할 항목입니다.</div>
+      </div>
+    </div>
+    <div class="row-item">
+      <div class="row-icon" style="background:#FCEBEB;"><i class="ti ti-brain" style="color:#A32D2D;"></i></div>
+      <div class="row-main">
+        <div class="row-title">치매 보장 없음 <span class="badge bd">공백</span></div>
+        <div class="row-desc">치매 진단비 <strong style="color:#1a1a1a;">0원</strong>. 발병 시 평균 입원 190일, 입원비만 1,547만원입니다.</div>
+      </div>
+    </div>
+    <div class="row-item">
+      <div class="row-icon" style="background:#FAEEDA;"><i class="ti ti-virus" style="color:#854F0B;"></i></div>
+      <div class="row-main">
+        <div class="row-title">암 치료비 부족 <span class="badge bw">부족</span></div>
+        <div class="row-desc">일반암 진단비(1억)는 있으나 항암치료비 <strong style="color:#1a1a1a;">0원</strong>. 담낭·췌장암 고위험 상태입니다.</div>
+      </div>
+    </div>
+    <div class="row-item">
+      <div class="row-icon" style="background:#FAEEDA;"><i class="ti ti-building-hospital" style="color:#854F0B;"></i></div>
+      <div class="row-main">
+        <div class="row-title">입원 의료비 없음 <span class="badge bw">부족</span></div>
+        <div class="row-desc">질병 입원·통원 의료비 <strong style="color:#1a1a1a;">0원</strong>. 생애 3.1억 의료비를 커버할 실비가 없습니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout">
+    <p>지금까지 납입한 1,450만원은 헛돈이 아닙니다. 다만 <strong>생체나이가 말해주는 위험과 보장이 엇박자</strong>인 것이 아쉬운 지점입니다.</p>
+  </div>
+  <div class="nav-row">
+    <button class="nbtn" onclick="go(0)">‹ 이전</button>
+    <span class="pg">2 / 4</span>
+    <button class="nbtn nbtn-primary" onclick="go(2)">이유 보기 ›</button>
+  </div>
+</div>
+
+<div id="s2" style="display:none;">
+  <div class="progress-header">
+    <div class="progress-steps">
+      <div class="pstep done"></div>
+      <div class="pstep done"></div>
+      <div class="pstep active"></div>
+      <div class="pstep"></div>
+    </div>
+    <span class="step-label">3 / 4</span>
+  </div>
+  <div class="step-tag">STEP 03 · 왜 지금 문제인가</div>
+  <div class="headline">숫자로 보면<br>더 명확합니다.</div>
+  <div class="subline">위험은 먼 미래가 아닙니다. 장은빈님의 생체 데이터가 이미 그 위험에 가까워지고 있습니다.</div>
+  <div class="card gap">
+    <div class="section-label">심뇌혈관 — 위험 vs 보장</div>
+    <div class="grid2" style="margin-bottom:10px;">
+      <div class="scard" style="text-align:center;">
+        <div style="font-size:11px;color:#666;margin-bottom:4px;">뇌졸중 위험도</div>
+        <div style="font-size:22px;font-weight:600;color:#E24B4A;">+30%</div>
+        <div style="font-size:10px;color:#A32D2D;">동년배 대비</div>
+      </div>
+      <div class="scard" style="text-align:center;">
+        <div style="font-size:11px;color:#666;margin-bottom:4px;">현재 뇌졸중 보장</div>
+        <div style="font-size:22px;font-weight:600;color:#E24B4A;">0원</div>
+        <div style="font-size:10px;color:#A32D2D;">진단비 없음</div>
+      </div>
+    </div>
+    <div class="info-box">뇌졸중 발생 시 평균 입원 94일, 입원비만 <strong style="color:#1a1a1a;">2,218만원</strong>. 심장나이 41.2세인 지금 이 위험은 먼 미래가 아닙니다.</div>
+  </div>
+  <div class="card gap">
+    <div class="section-label">담낭·췌장암 — 고위험인데 치료비가 없다</div>
+    <div class="grid2" style="margin-bottom:10px;">
+      <div class="scard" style="text-align:center;">
+        <div style="font-size:11px;color:#666;margin-bottom:4px;">담낭암 위험도</div>
+        <div style="font-size:22px;font-weight:600;color:#E24B4A;">+115%</div>
+        <div style="font-size:10px;color:#A32D2D;">고위험</div>
+      </div>
+      <div class="scard" style="text-align:center;">
+        <div style="font-size:11px;color:#666;margin-bottom:4px;">면역항암제 1회</div>
+        <div style="font-size:22px;font-weight:600;color:#E24B4A;">1,350만</div>
+        <div style="font-size:10px;color:#A32D2D;">연간 최대 1.7억</div>
+      </div>
+    </div>
+    <div class="info-box">일반암 진단비 1억은 치료 시작금일 뿐. 면역항암제·중입자치료(5,500만)·로봇수술(1,500만)은 현재 보장에서 <strong style="color:#1a1a1a;">전혀 커버 안 됩니다.</strong></div>
+  </div>
+  <div class="card gap">
+    <div class="section-label">상령일 D-64의 의미</div>
+    <div class="grid2" style="margin-bottom:10px;">
+      <div class="scard" style="text-align:center;">
+        <div style="font-size:11px;color:#666;margin-bottom:4px;">지금 가입하면</div>
+        <div style="font-size:15px;font-weight:600;color:#3B6D11;">32세 보험료</div>
+        <div style="font-size:10px;color:#3B6D11;">낮은 보험료 유지</div>
+      </div>
+      <div class="scard" style="text-align:center;">
+        <div style="font-size:11px;color:#666;margin-bottom:4px;">8월 28일 이후</div>
+        <div style="font-size:15px;font-weight:600;color:#E24B4A;">33세 보험료</div>
+        <div style="font-size:10px;color:#A32D2D;">자동 인상</div>
+      </div>
+    </div>
+    <div class="info-box">지금이 가장 유리한 조건으로 보장을 채울 수 있는 마지막 타이밍입니다.</div>
+  </div>
+  <div class="callout-amber">
+    <p><strong>정리하면</strong> — 생체나이가 높아 위험이 가까이 있고, 위험한 질환일수록 보장이 비어있으며, 지금 채우지 않으면 보험료도 오릅니다.</p>
+  </div>
+  <div class="nav-row">
+    <button class="nbtn" onclick="go(1)">‹ 이전</button>
+    <span class="pg">3 / 4</span>
+    <button class="nbtn nbtn-primary" onclick="go(3)">액션 보기 ›</button>
+  </div>
+</div>
+
+<div id="s3" style="display:none;">
+  <div class="progress-header">
+    <div class="progress-steps">
+      <div class="pstep done"></div>
+      <div class="pstep done"></div>
+      <div class="pstep done"></div>
+      <div class="pstep active"></div>
+    </div>
+    <span class="step-label">4 / 4</span>
+  </div>
+  <div class="step-tag">STEP 04 · 액션 플랜</div>
+  <div class="headline">지금 해야 할 것,<br>순서대로 정리했습니다.</div>
+  <div class="subline">한 번에 다 할 필요 없습니다. 우선순위 순서대로 하나씩 채워나가면 됩니다.</div>
+  <div class="callout-blue" style="margin-bottom:1rem;">
+    <p><strong>상령일 2026년 8월 28일 D-64.</strong> 1·2번은 상령일 전에 반드시 완료를 권장합니다.</p>
+  </div>
+  <div class="card gap">
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <div class="action-title">심뇌혈관 3종 진단비 가입</div>
+        <div class="action-desc">급성심근경색·뇌졸중·뇌출혈 진단비 현재 0원. 각 5,000만~1억 수준 설계를 권장합니다.</div>
+        <span class="badge bd">긴급 — 상령일 전</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <div class="action-title">항암치료비 특약 추가</div>
+        <div class="action-desc">고액·면역항암 치료비 현재 0원. 담낭·췌장암 고위험 기준 8,000만 수준 확보 필요합니다.</div>
+        <span class="badge bd">긴급 — 상령일 전</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <div class="action-title">실손의료비 가입 여부 확인</div>
+        <div class="action-desc">질병 입원·통원 의료비 0원. 기존 실손 보유 여부 먼저 확인이 필요합니다.</div>
+        <span class="badge bw">중기 — 1개월 내</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-body">
+        <div class="action-title">치매 진단비 설계</div>
+        <div class="action-desc">치매 위험 +21%, 현재 보장 0원. 경증 포함 5,000만 수준 준비를 권장합니다.</div>
+        <span class="badge bw">중기 — 2개월 내</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">5</div>
+      <div class="action-body">
+        <div class="action-title">KDB 종신보험 재검토</div>
+        <div class="action-desc">월 104,500원 최고 지출, 사망보장 1,000만원. 비용 효율 재검토가 필요합니다.</div>
+        <span class="badge bg">장기 — 3개월 내</span>
+      </div>
+    </div>
+  </div>
+  <div class="card gap">
+    <div class="section-label">긴급도 한눈에 보기</div>
+    <div class="urg-row"><span class="urg-label">심뇌혈관 진단비</span><div class="urg-track"><div class="urg-fill" style="width:100%;background:#E24B4A;"></div></div><span class="urg-val" style="color:#A32D2D;">긴급</span></div>
+    <div class="urg-row"><span class="urg-label">항암치료비 특약</span><div class="urg-track"><div class="urg-fill" style="width:100%;background:#E24B4A;"></div></div><span class="urg-val" style="color:#A32D2D;">긴급</span></div>
+    <div class="urg-row"><span class="urg-label">실손의료비 확인</span><div class="urg-track"><div class="urg-fill" style="width:70%;background:#EF9F27;"></div></div><span class="urg-val" style="color:#854F0B;">중기</span></div>
+    <div class="urg-row"><span class="urg-label">치매 진단비</span><div class="urg-track"><div class="urg-fill" style="width:60%;background:#EF9F27;"></div></div><span class="urg-val" style="color:#854F0B;">중기</span></div>
+    <div class="urg-row"><span class="urg-label">종신보험 재검토</span><div class="urg-track"><div class="urg-fill" style="width:35%;background:#639922;"></div></div><span class="urg-val" style="color:#3B6D11;">장기</span></div>
+  </div>
+  <div class="nav-row">
+    <button class="nbtn" onclick="go(2)">‹ 이전</button>
+    <span class="pg">4 / 4</span>
+    <button class="nbtn" onclick="go(0)">처음부터 ↺</button>
+  </div>
+</div>
+
+</div>
+<script>
+function go(n){
+  [0,1,2,3].forEach(function(i){
+    document.getElementById('s'+i).style.display=i===n?'block':'none';
+  });
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
